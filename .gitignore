@@ -1,0 +1,9 @@
+node_modules/
+.serverless/
+.env
+.env.local
+.env.pro
+__pycache__/
+*.pyc
+.venv/
+.python-version
