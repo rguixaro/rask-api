@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 import jwt
 from dateutil.relativedelta import relativedelta
@@ -43,7 +43,7 @@ def decode_token(token):
         return {"value": value}
     except jwt.ExpiredSignatureError:
         return {"error": "TOKEN_EXPIRED"}
-    except jwt.InvalidSignatureError:
+    except (jwt.InvalidSignatureError, jwt.DecodeError):
         return {"error": "TOKEN_INVALID"}
 
 
@@ -89,8 +89,8 @@ def build_cookie_headers(refresh_token, access_token):
 # --- Helpers ---
 
 def _yearly_expiry():
-    return datetime.now() + relativedelta(years=1)
+    return datetime.now(timezone.utc) + relativedelta(years=1)
 
 
 def _hourly_expiry():
-    return datetime.now() + relativedelta(hours=1)
+    return datetime.now(timezone.utc) + relativedelta(hours=1)
