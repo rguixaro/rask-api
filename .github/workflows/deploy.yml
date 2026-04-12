@@ -1,0 +1,47 @@
+name: Deploy to Production
+
+on:
+    push:
+        branches:
+            - main
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    deploy:
+        name: Deploy rask-api (prod)
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set up Python 3.11
+              uses: actions/setup-python@v5
+              with:
+                  python-version: '3.11'
+
+            - name: Set up Node.js 20
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'npm'
+
+            - name: Configure AWS credentials (OIDC)
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/rask-api-github-deploy
+                  aws-region: eu-west-3
+
+            - name: Install npm dependencies
+              run: npm ci
+
+            - name: Deploy to AWS (prod)
+              run: npx sls deploy --stage prod
+              env:
+                  DB_URL: ${{ secrets.DB_URL }}
+                  ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+                  CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
+                  COOKIE_DOMAIN: ${{ secrets.COOKIE_DOMAIN }}
