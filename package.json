@@ -1,0 +1,18 @@
+{
+  "name": "rask-api",
+  "version": "0.0.3",
+  "private": true,
+  "devDependencies": {
+    "serverless": "^3",
+    "serverless-python-requirements": "^6.1.1"
+  },
+  "scripts": {
+    "deploy": "sls deploy",
+    "deploy:prod": "sls deploy --stage prod",
+    "remove": "sls remove",
+    "logs:auth": "sls logs -f auth -t",
+    "logs:link-check": "sls logs -f linkCheck -t",
+    "logs:link-create": "sls logs -f linkCreate -t",
+    "logs:links-list": "sls logs -f linksList -t"
+  }
+}
