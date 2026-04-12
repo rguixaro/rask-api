@@ -1,0 +1,79 @@
+service: rask-api
+
+frameworkVersion: '3'
+
+provider:
+    name: aws
+    runtime: python3.11
+    stage: ${opt:stage, 'prod'}
+    region: eu-west-3
+    memorySize: 128
+    timeout: 10
+    environment:
+        DB_URL: ${env:DB_URL}
+        ENCRYPTION_KEY: ${env:ENCRYPTION_KEY}
+        CORS_ORIGIN: ${env:CORS_ORIGIN}
+        COOKIE_DOMAIN: ${env:COOKIE_DOMAIN}
+
+functions:
+    auth:
+        handler: handlers/auth.handler
+        events:
+            - http:
+                  path: auth
+                  method: post
+                  cors:
+                      origin: ${self:provider.environment.CORS_ORIGIN}
+                      headers:
+                          - Content-Type
+                          - Cookie
+                      allowCredentials: true
+
+    linkCreate:
+        handler: handlers/link_create.handler
+        events:
+            - http:
+                  path: link-create
+                  method: post
+                  cors:
+                      origin: ${self:provider.environment.CORS_ORIGIN}
+                      headers:
+                          - Content-Type
+                          - Cookie
+                      allowCredentials: true
+
+    linkCheck:
+        handler: handlers/link_check.handler
+        events:
+            - http:
+                  path: link-check/{slug}
+                  method: get
+                  cors:
+                      origin: ${self:provider.environment.CORS_ORIGIN}
+                      headers:
+                          - Content-Type
+                          - Cookie
+                      allowCredentials: true
+
+    linksList:
+        handler: handlers/links_list.handler
+        events:
+            - http:
+                  path: links-list
+                  method: get
+                  cors:
+                      origin: ${self:provider.environment.CORS_ORIGIN}
+                      headers:
+                          - Content-Type
+                          - Cookie
+                      allowCredentials: true
+
+plugins:
+    - serverless-python-requirements
+
+custom:
+    pythonRequirements:
+        slim: true
+        slimPatternsAppendDefaults: false
+        slimPatterns:
+            - '**/*.egg-info*'
