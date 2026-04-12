@@ -38,9 +38,16 @@ jobs:
             - name: Install npm dependencies
               run: npm ci
 
+            - name: Install Python dependencies
+              run: pip install -r requirements-dev.txt
+
+            - name: Run tests
+              run: pytest tests/ -v
+
             - name: Deploy to AWS (prod)
               run: npx sls deploy --stage prod
               env:
+                  SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
                   DB_URL: ${{ secrets.DB_URL }}
                   ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
                   CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
