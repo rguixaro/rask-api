@@ -1,6 +1,8 @@
+org: rguixaro
+app: rask-api
 service: rask-api
 
-frameworkVersion: '3'
+frameworkVersion: '4'
 
 provider:
     name: aws
