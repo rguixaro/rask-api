@@ -1,4 +1,4 @@
-"""POST /auth — Authenticate user via cookie-based JWT session."""
+"""POST /auth"""
 
 import secrets
 import datetime
@@ -15,7 +15,7 @@ def handler(event, context):
         cookie_header = headers.get("Cookie") or headers.get("cookie") or ""
         rask_uuid, rask_session = parse_cookies(cookie_header)
 
-        # No refresh token — create new session
+        # No refresh token, create new session
         if not rask_uuid:
             return _create_session(db)
 
@@ -26,16 +26,16 @@ def handler(event, context):
 
         session_id = uuid_token["value"]["session_id"]
 
-        # Has refresh but no access token — generate new access token
+        # Has refresh but no access token, generate new access token
         if not rask_session:
             access_token = generate_access_token(session_id)
             cookies = build_cookie_headers(rask_uuid, access_token)
             return success({"error": False}, cookies=cookies)
 
-        # Has both tokens — validate access token
+        # Has both tokens, validate access token
         session_token = decode_token(rask_session)
         if "error" in session_token:
-            # Access token expired — refresh it
+            # Access token expired, refresh it
             access_token = generate_access_token(session_id)
             cookies = build_cookie_headers(rask_uuid, access_token)
             return success({"error": False}, cookies=cookies)
