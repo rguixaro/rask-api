@@ -1,6 +1,6 @@
 # <img src="https://raw.githubusercontent.com/rguixaro/rask-app/main/public/images/logo.svg" alt="Rask" height="28"> Rask API
 
-Serverless REST API powering [rask.rguixaro.dev](https://rask.rguixaro.dev) — a URL
+Serverless REST API powering [rask.rguixaro.dev](https://rask.rguixaro.dev), a URL
 shortener built on AWS Lambda and API Gateway.
 
 ## Tech Stack
@@ -44,7 +44,7 @@ shortener built on AWS Lambda and API Gateway.
     pip install -r requirements.txt
     ```
 
-2. Copy the environment template and fill in your values:
+2. Copy the environment template and fill in the values:
 
     ```bash
     cp .env.template .env.local
@@ -77,8 +77,8 @@ pytest tests/ -v
 
 ## CI/CD
 
-Deploys to AWS (eu-west-3) on every push to `main` using OIDC authentication — no
-stored AWS credentials. Required GitHub Secrets:
+Deploys to AWS on every push to `main` using OIDC authentication, no stored AWS
+credentials. Required GitHub Secrets:
 
 | Secret           | Description               |
 | ---------------- | ------------------------- |

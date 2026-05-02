@@ -1,4 +1,4 @@
-"""GET /link-check/{slug} — Resolve a short link and increment visits."""
+"""GET /link-check/{slug}"""
 
 from shared.db import get_db
 from shared.response import success, not_found, error
