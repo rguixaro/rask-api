@@ -43,7 +43,7 @@ def decode_token(token):
         return {"value": value}
     except jwt.ExpiredSignatureError:
         return {"error": "TOKEN_EXPIRED"}
-    except (jwt.InvalidSignatureError, jwt.DecodeError):
+    except jwt.InvalidTokenError:
         return {"error": "TOKEN_INVALID"}
 
 

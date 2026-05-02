@@ -1,4 +1,4 @@
-"""GET /links-list — List all links created by the authenticated session."""
+"""GET /links-list"""
 
 from bson import ObjectId
 

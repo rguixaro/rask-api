@@ -1,4 +1,4 @@
-"""POST /link-create — Create a new short link."""
+"""POST /link-create"""
 
 import json
 import datetime

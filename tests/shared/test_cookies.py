@@ -67,7 +67,21 @@ def test_decode_token_expired():
     assert result == {"error": "TOKEN_EXPIRED"}
 
 def test_decode_token_invalid_signature():
-    token = jwt.encode({"session_id": "s1"}, "wrong-key", algorithm="HS256")
+    token = jwt.encode(
+        {"session_id": "s1"},
+        "wrong-key-for-unit-tests-only-32-bytes",
+        algorithm="HS256",
+    )
+    result = decode_token(token)
+    assert result == {"error": "TOKEN_INVALID"}
+
+def test_decode_token_rejects_unknown_critical_header():
+    token = jwt.encode(
+        {"session_id": "s1", "exp": int(time.time()) + 3600},
+        TEST_KEY,
+        algorithm="HS256",
+        headers={"crit": ["x-custom-policy"], "x-custom-policy": "require-mfa"},
+    )
     result = decode_token(token)
     assert result == {"error": "TOKEN_INVALID"}
 
